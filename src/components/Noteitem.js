@@ -12,9 +12,8 @@ function Noteitem(props) {
 						Some quick example text to build on the card title and make up the
 						bulk of the card's content.
 					</p>
-					<a href="#" className="btn btn-primary">
-						Go somewhere
-					</a>
+					<i className="fa-solid fa-pen-to-square mx-2"></i>
+					<i className="fa-solid fa-trash mx-2"></i>
 				</div>
 			</div>
 		</div>
