@@ -31,19 +31,10 @@ function NoteState(props) {
 			},
 			body: JSON.stringify({ title, description, tag }),
 		});
-		console.log(response);
+		//response.json() returns a promise, whereas JSON.parse(response) is synchronous
+		const note_ = await response.json();
 
 		//Client Side addition
-		const note_ = {
-			_id: "62f264dce6d9968763a006756d",
-			user: "62f23026a50d7c4453a11595",
-			title: title,
-			description: description,
-			tag: tag,
-			createdAt: "2022-08-09T13:45:00.295Z",
-			updatedAt: "2022-08-09T13:45:00.295Z",
-			__v: 0,
-		};
 		setNote(notes.concat(note_));
 	}
 
@@ -57,17 +48,42 @@ function NoteState(props) {
 					"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmMjMwMjZhNTBkN2M0NDUzYTExNTk1In0sImlhdCI6MTY2MDAzOTIwNn0.0CksiIYy54pl2gHaZYJZuqeLV7JapbDppumxpCtciKc",
 			},
 		});
-		console.log(response);
+		const json = await response.json();
 
 		//Client side deletion
-		const updatedNote = notes.filter((el) => {
-			return el._id !== id;
-		});
+		const updatedNote = notes.filter((el) => el._id !== id);
 		setNote(updatedNote);
 	}
 
+	async function editNote(id, title, description, tag) {
+		//Server side edit - API call
+		const response = await fetch(`${host}notes/updatenote/${id}`, {
+			method: "put",
+			headers: {
+				"Content-Type": "application/json",
+				"auth-token":
+					"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmMjMwMjZhNTBkN2M0NDUzYTExNTk1In0sImlhdCI6MTY2MDAzOTIwNn0.0CksiIYy54pl2gHaZYJZuqeLV7JapbDppumxpCtciKc",
+			},
+			body: "data",
+		});
+		console.log(response);
+
+		//Client side edit
+		for (let index = 0; index < notes.length; index++) {
+			const element = notes[index];
+			if (element._id === id) {
+				element.title = title;
+				element.description = description;
+				element.tag = tag;
+			}
+		}
+		setNote(notes);
+	}
+
 	return (
-		<noteContext.Provider value={{ notes, addNote, deleteNote, getAllNotes }}>
+		<noteContext.Provider
+			value={{ notes, addNote, deleteNote, editNote, getAllNotes }}
+		>
 			{" "}
 			{props.children}{" "}
 		</noteContext.Provider>
