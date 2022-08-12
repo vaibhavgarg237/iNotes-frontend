@@ -57,27 +57,30 @@ function NoteState(props) {
 
 	async function editNote(id, title, description, tag) {
 		//Server side edit - API call
-		const response = await fetch(`${host}notes/updatenote/${id}`, {
-			method: "put",
+		const response = await fetch(`${host}api/notes/updatenote/${id}`, {
+			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 				"auth-token":
 					"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmMjMwMjZhNTBkN2M0NDUzYTExNTk1In0sImlhdCI6MTY2MDAzOTIwNn0.0CksiIYy54pl2gHaZYJZuqeLV7JapbDppumxpCtciKc",
 			},
-			body: "data",
+			body: JSON.stringify({ title, description, tag }),
 		});
-		console.log(response);
+		// console.log(response.json());
 
+		//CREATES A DEEP COPY, HENCE TABHI ABLE TO CHANGE!!!
+		let newNotes = JSON.parse(JSON.stringify(notes));
 		//Client side edit
-		for (let index = 0; index < notes.length; index++) {
-			const element = notes[index];
+		for (let index = 0; index < newNotes.length; index++) {
+			const element = newNotes[index];
 			if (element._id === id) {
-				element.title = title;
-				element.description = description;
-				element.tag = tag;
+				newNotes[index].title = title;
+				newNotes[index].description = description;
+				newNotes[index].tag = tag;
+				break;
 			}
 		}
-		setNote(notes);
+		setNote(newNotes);
 	}
 
 	return (

@@ -10,13 +10,12 @@ function AddNote() {
 	});
 
 	const handleSubmit = (e) => {
-		console.log(note);
 		e.preventDefault();
 		addNote(note.title, note.description, note.tag);
 	};
 
 	const handleChange = (e) => {
-		setNote({ ...note, [e.target.className]: e.target.value });
+		setNote({ ...note, [e.target.id]: e.target.value });
 	};
 
 	return (
@@ -29,7 +28,7 @@ function AddNote() {
 					</label>
 					<input
 						type="text"
-						className="title"
+						className="form-control"
 						id="title"
 						aria-describedby="emailHelp"
 						onChange={handleChange}
@@ -41,8 +40,19 @@ function AddNote() {
 					</label>
 					<input
 						type="text"
-						className="description"
+						className="form-control"
 						id="description"
+						onChange={handleChange}
+					/>
+				</div>
+				<div className="mb-3">
+					<label htmlFor="tag" className="form-label">
+						Tag
+					</label>
+					<input
+						type="text"
+						className="form-control"
+						id="tag"
 						onChange={handleChange}
 					/>
 				</div>
