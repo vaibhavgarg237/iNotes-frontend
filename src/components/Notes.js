@@ -31,7 +31,7 @@ function Notes() {
 		etag: "",
 	});
 	const handleSubmit = (e) => {
-		console.log(note);
+		// console.log(note);
 		e.preventDefault();
 		editNote(note._id, note.etitle, note.edescription, note.etag);
 		refClose.current.click();
@@ -126,6 +126,9 @@ function Notes() {
 								type="button"
 								className="btn btn-primary"
 								onClick={handleSubmit}
+								disabled={
+									note.etitle.length < 5 || note.edescription.length < 5
+								}
 							>
 								Update Note
 							</button>
@@ -137,6 +140,9 @@ function Notes() {
 			{/* row my-3 helps in multiple cards in 1 row, instead of container */}
 			<div className="row my-3">
 				<h2> Your Notes </h2>
+				<div className="container mx-2">
+					{notes.length === 0 && "No notes to display"}
+				</div>
 				{notes.map((note) => {
 					return (
 						<Noteitem key={note._id} note={note} updateNote={updatedNote} />
