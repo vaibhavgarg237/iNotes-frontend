@@ -35,7 +35,8 @@ function Login(props) {
 	};
 
 	return (
-		<div>
+		<div className="mt-2">
+			<h2>Login to continue!</h2>
 			<form onSubmit={handleLogin}>
 				<div className="mb-3">
 					<label htmlFor="exampleInputEmail1" className="form-label">

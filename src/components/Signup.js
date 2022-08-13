@@ -40,7 +40,8 @@ function Signup(props) {
 		}
 	};
 	return (
-		<div>
+		<div className="mt-2">
+			<h2>Signup to continue!</h2>
 			<form onSubmit={handleSignup}>
 				<div className="mb-3">
 					<label htmlFor="password" className="form-label">
