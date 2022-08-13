@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Signup() {
+function Signup(props) {
 	const navigate = useNavigate();
 
 	const host = "http://localhost:5000";
@@ -34,8 +34,9 @@ function Signup() {
 		if (res.success) {
 			localStorage.setItem("token", res.tokenn);
 			navigate("/");
+			props.showAlert("Signup Successful!", "success");
 		} else {
-			alert("theek se karo bhai");
+			props.showAlert("Invalid details", "danger");
 		}
 	};
 	return (
