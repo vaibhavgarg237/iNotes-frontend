@@ -8,44 +8,54 @@ function NoteState(props) {
   const [notes, setNote] = useState(notesInitial);
 
   const getAllNotes = async () => {
-    const response = await fetch(`${host}api/notes/fetchallnotes`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
-      },
-    });
-    const json = await response.json();
-    // console.log(json);
-    setNote(json);
+    try {
+      const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+      const json = await response.json();
+      // console.log(json);
+      setNote(json);
+    } catch (e) {
+      // console.log(localStorage.getItem("token"));
+      console.log("fetchallnotes", e, "fetchallnotes");
+    }
   };
 
   async function addNote(title, description, tag) {
     //Server side addition - API call
-    const response = await fetch(`${host}api/notes/addnote`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
-      },
-      body: JSON.stringify({ title, description, tag }),
-    });
-    //response.json() returns a promise, whereas JSON.parse(response) is synchronous
-    const note_ = await response.json();
+    try {
+      const response = await fetch(`${host}/api/notes/addnote`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ title, description, tag }),
+      });
+      //response.json() returns a promise, whereas JSON.parse(response) is synchronous
+      const note_ = await response.json();
 
-    //Client Side addition
-    setNote(notes.concat(note_));
+      //Client Side addition
+      setNote(notes.concat(note_));
+    } catch (e) {
+      console.log("NoteStateSTARt", e, "NoteState END");
+    }
   }
 
   async function deleteNote(id) {
     //Server side deletion - API call
-    const response = await fetch(`${host}api/notes/deletenote/${id}`, {
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "auth-token": localStorage.getItem("token"),
       },
     });
+    // eslint-disable-next-line
     const json = await response.json();
 
     //Client side deletion
@@ -55,7 +65,8 @@ function NoteState(props) {
 
   async function editNote(id, title, description, tag) {
     //Server side edit - API call
-    const response = await fetch(`${host}api/notes/updatenote/${id}`, {
+    // eslint-disable-next-line
+    const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
